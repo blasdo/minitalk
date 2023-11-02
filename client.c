@@ -6,7 +6,7 @@
 /*   By: bvelasco <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 18:14:27 by bvelasco          #+#    #+#             */
-/*   Updated: 2023/11/01 18:14:34 by bvelasco         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:15:54 by bvelasco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,18 @@ void send_byte(int pid, t_byte b)
 	int tries;
 	int sent_bits;
 
-	signal_verified = 0;
 	sent_bits = 0;
-	tries = 0;
 	while (sent_bits < 8)
 	{
 		if (b >= 128)
 			kill(pid, SIGUSR2);
 		else
 			kill(pid, SIGUSR1);
-		usleep(50000);
+		signal_verified = 0;
+		sleep(5);
 		if (!signal_verified)
 		{
-			if (tries++ >= 3)
-				error(2);
+			error(2);
 			continue;
 		}
 		sent_bits++;
