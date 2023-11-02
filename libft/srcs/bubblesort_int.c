@@ -6,7 +6,7 @@
 /*   By: bvelasco <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 17:29:45 by bvelasco          #+#    #+#             */
-/*   Updated: 2023/10/02 17:18:42 by bvelasco         ###   ########.fr       */
+/*   Updated: 2023/11/03 00:44:20 by bvelasco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	bubblesort_int(int *numbers, size_t len)
 				numbers[i] = *prev;
 				*prev = aux;
 			}
-			prev = numbers + i++;;
+			prev = numbers + i++;
 		}
 		max--;
 	}

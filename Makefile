@@ -8,14 +8,15 @@ LIBFT_NAME	= ft
 LIBFT_DIR	= libft
 LIBFT_A_DIR	= libft/lib
 LIBFT_I_DIR	= libft/include
+LDFLAGS		= -fuse-ld=lld
 
 all: $(SERVER) $(CLIENT)
 
 $(SERVER): $(LIBFT)
-	gcc -L$(LIBFT_A_DIR) -l$(LIBFT_NAME) -I$(LIBFT_I_DIR) $(SRCS_COMMON) $(SRCS_SERVER) -o $(SERVER)
+	gcc $(LDFLAGS) -L$(LIBFT_A_DIR) -l$(LIBFT_NAME) -I$(LIBFT_I_DIR) $(SRCS_COMMON) $(SRCS_SERVER) -o $(SERVER)
 
 $(CLIENT): $(LIBFT)
-	gcc -L$(LIBFT_A_DIR) -l$(LIBFT_NAME) -I$(LIBFT_I_DIR) $(SRCS_COMMON) $(SRCS_CLIENT) -o $(CLIENT)
+	gcc $(LDFLAGS) -L$(LIBFT_A_DIR) -l$(LIBFT_NAME) -I$(LIBFT_I_DIR) $(SRCS_COMMON) $(SRCS_CLIENT) -o $(CLIENT)
 
 $(LIBFT):
 	make --directory $(LIBFT_DIR) 
