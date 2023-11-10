@@ -32,7 +32,7 @@ void	send_byte(int pid, t_byte b)
 			kill(pid, SIGUSR2);
 		else
 			kill(pid, SIGUSR1);
-		usleep(50000);
+		usleep(10000);
 		if (!g_signal_verified)
 		{
 			error(2);

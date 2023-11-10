@@ -14,7 +14,7 @@
 
 t_list	*g_list = 0;
 
-void	init_message(siginfo_t *info)
+void	init_message(siginfo_t *info, int *bw, t_byte *content)
 {
 	t_mi	*message_info;
 
@@ -28,6 +28,8 @@ void	init_message(siginfo_t *info)
 	g_list = ft_lstnew(message_info);
 	if (!g_list)
 		error(3);
+	*bw = 0;
+	*content = 0;
 }
 
 void	printmsg(void)
@@ -86,7 +88,9 @@ void	recive_byte(int signum, siginfo_t *info, void *previous_act)
 	static t_byte	current = 0;
 
 	if (!g_list)
-		init_message(info);
+	{
+		init_message(info, &bw, &current);
+	}
 	if (info->si_pid != ((t_mi *)(g_list->content))->client_pid)
 	{
 		kill(info->si_pid, SIGUSR2);
@@ -102,7 +106,7 @@ void	recive_byte(int signum, siginfo_t *info, void *previous_act)
 		current = 0;
 	}
 	current <<= 1;
-	usleep(500);
+	usleep(10);
 	kill(info->si_pid, SIGUSR1);
 }
 
@@ -126,7 +130,7 @@ int	main(void)
 	{
 		if (g_list)
 			((t_mi *) g_list->content)->timeout = 1;
-		usleep(500000);
+		usleep(50000);
 		if (g_list && ((t_mi *) g_list->content)->timeout == 1)
 			ft_lstclear(&g_list, free);
 	}
