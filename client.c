@@ -23,7 +23,7 @@ void	signal_reciver(int sigint)
 void	force_server_timeout(void)
 {
 	g_signal_verifier = 35;
-	usleep(52000);
+	usleep(100000);
 	if (g_signal_verifier != 35)
 		force_server_timeout();
 }
@@ -45,7 +45,7 @@ int	send_byte(int pid, t_byte b)
 			kill(pid, SIGUSR1);
 			g_signal_verifier = SIGUSR1;
 		}
-		usleep(10000);
+		usleep(50000);
 		if (g_signal_verifier)
 			return (1);
 		sent_bits++;
@@ -66,17 +66,17 @@ void	send_msg(int pid, char *msg)
 		verifier = send_byte(pid, msg[i++]);
 		if (verifier == 1)
 		{
-			if (tries < 3)
+			if (tries < 5)
 			{
 				ft_printf("Failed to send message try %i\n", ++tries);
 				force_server_timeout();
 			}
 			else
-				error(4);
+				error(2);
 			i = 0;
 		}
 	}
-	while (send_byte(pid, 0) == 1 && ++tries)
+	if (send_byte(pid, 0) == 1 && ++tries)
 	{
 		force_server_timeout();
 		send_msg(pid, msg);
