@@ -93,10 +93,7 @@ void	recive_byte(int signum, siginfo_t *info, void *previous_act)
 		init_message(info, &bw, &current);
 	}
 	if (info->si_pid != ((t_mi *)(g_list->content))->client_pid)
-	{
-		kill(info->si_pid, SIGUSR2);
 		return ;
-	}
 	((t_mi *)g_list->content)->timeout = 0;
 	if (signum == SIGUSR2)
 		current += 1;

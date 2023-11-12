@@ -12,19 +12,19 @@
 
 #include "minitalk.h"
 
-int	g_signal_verified = 0;
+int	g_signal_verifier = 1;
 
 void	signal_reciver(int sigint)
 {
-	if (sigint != g_signal_verified)
-		g_signal_verified = 0;
+	if (sigint == g_signal_verifier)
+		g_signal_verifier = 0;
 }
 
 void	force_server_timeout(void)
 {
-	g_signal_verified = 35;
+	g_signal_verifier = 35;
 	usleep(52000);
-	if (g_signal_verified != 35)
+	if (g_signal_verifier != 35)
 		force_server_timeout();
 }
 
@@ -38,15 +38,15 @@ int	send_byte(int pid, t_byte b)
 		if (b >= 128)
 		{
 			kill(pid, SIGUSR2);
-			g_signal_verified = SIGUSR2;
+			g_signal_verifier = SIGUSR2;
 		}
 		else
 		{
 			kill(pid, SIGUSR1);
-			g_signal_verified = SIGUSR2;
+			g_signal_verifier = SIGUSR1;
 		}
 		usleep(10000);
-		if (!g_signal_verified)
+		if (g_signal_verifier)
 			return (1);
 		sent_bits++;
 		b <<= 1;
@@ -64,11 +64,11 @@ void	send_msg(int pid, char *msg)
 	while (msg[i])
 	{
 		verifier = send_byte(pid, msg[i++]);
-		if (!verifier)
+		if (verifier == 1)
 		{
 			if (tries < 3)
 			{
-				ft_printf("Failed to verify message try %i", ++tries);
+				ft_printf("Failed to send message try %i\n", ++tries);
 				force_server_timeout();
 			}
 			else
@@ -76,7 +76,7 @@ void	send_msg(int pid, char *msg)
 			i = 0;
 		}
 	}
-	while (send_byte(pid, 0) && ++tries)
+	while (send_byte(pid, 0) == 1 && ++tries)
 	{
 		force_server_timeout();
 		send_msg(pid, msg);

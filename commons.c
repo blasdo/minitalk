@@ -19,9 +19,9 @@ void	error(int errnum)
 	else if (errnum == 2)
 		ft_fdprintf(2, "Timeout\n");
 	else if (errnum == 3)
-		ft_fdprintf(2, "Cannot allocate memory");
+		ft_fdprintf(2, "Cannot allocate memory\n");
 	else if (errnum == 4)
-		ft_fdprintf(2, "Too many tries");
+		ft_fdprintf(2, "Too many tries\n");
 	else
 		ft_fdprintf(2, "Error code not found, the code is %i\n", errnum);
 	exit(1);
