@@ -87,6 +87,7 @@ void	recive_byte(int signum, siginfo_t *info, void *previous_act)
 	static int		bw = 0;
 	static t_byte	current = 0;
 
+	(void) previous_act;
 	if (!g_list)
 	{
 		init_message(info, &bw, &current);
@@ -107,15 +108,13 @@ void	recive_byte(int signum, siginfo_t *info, void *previous_act)
 	}
 	current <<= 1;
 	usleep(10);
-	kill(info->si_pid, SIGUSR1);
+	kill(info->si_pid, signum);
 }
 
 int	main(void)
 {
 	struct sigaction	sa;
 	sigset_t			usr;
-	char				*input_line;
-	void				*tmp;
 
 	ft_printf("%i\n", getpid());
 	sigemptyset(&usr);
